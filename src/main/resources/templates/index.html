@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+</head>
+<body>
+<!-- 記事投稿フォーム -->
+<form
+        th:action="@{/article/insert-article}"
+        method="post"
+        th:object="${articleForm}"
+>
+    <div th:errors="*{name}" style="color: red"></div>
+    <label for="name">投稿者名 : </label>
+    <input type="text" name="name" id="name" th:field="*{name}" />
+    <br />
+
+    <div th:errors="*{content}" style="color: red"></div>
+    <label for="content">投稿内容 : </label>
+    <textarea
+            name="content"
+            id="content"
+            rows="3"
+            cols="30"
+            th:field="*{content}"
+    ></textarea>
+    <br />
+
+    <button>記事投稿</button>
+</form>
+
+<hr />
+
+<!-- 記事の表示 -->
+<div th:each="article : ${articleList}">
+    <p>投稿者名 : <span th:text="${article.name}"></span></p>
+    <p>投稿内容 : <br /><span th:text="${article.content}"></span></p>
+    <br />
+
+    <!-- 記事削除フォーム -->
+    <form th:action="@{/article/delete-article}" method="post">
+        <!-- hiddenで記事idを送信 -->
+        <input type="hidden" name="articleId" th:value="${article.id}" />
+
+        <button>記事削除</button>
+    </form>
+
+    <!-- コメントの表示 -->
+    <div th:each="comment : ${article.commentList}">
+        <p>コメント者名 : <span th:text="${comment.name}"></span></p>
+        <p>コメント内容 :</p>
+        <p th:text="${comment.content}"></p>
+        <br />
+    </div>
+
+    <!-- コメント投稿フォーム -->
+    <form
+            th:action="@{/article/insert-comment}"
+            method="post"
+            th:object="${commentForm}"
+    >
+        <!-- hiddenで記事idを送信 -->
+        <input type="hidden" name="articleId" th:value="${article.id}" />
+
+        <!-- エラーが起きたコメントフォームにのみエラーメッセージを表示(名前) -->
+        <div th:if="${commentForm.articleId} == ${article.id}">
+            <p th:errors="*{name}" style="color: red"></p>
+        </div>
+
+        <label for="name">名前 : </label>
+        <input type="text" name="name" id="name" th:field="*{name}" />
+        <br />
+
+        <!-- エラーが起きたコメントフォームにのみエラーメッセージを表示(内容) -->
+        <div th:if="${commentForm.articleId} == ${article.id}">
+            <p th:errors="*{content}" style="color: red"></p>
+        </div>
+
+        <label for="content">コメント : </label>
+        <textarea
+                name="content"
+                id="content"
+                rows="3"
+                cols="30"
+                th:field="*{content}"
+        ></textarea>
+        <br />
+
+        <button>コメント投稿</button>
+    </form>
+    <hr />
+</div>
+</body>
+</html>
