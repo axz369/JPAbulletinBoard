@@ -41,7 +41,7 @@ public class ArticleController {
     @GetMapping("")
     public String index(ArticleForm articleForm, CommentForm commentForm, Model model){
         //表示するたびに最新の記事一覧を取得
-        List<Article> articleList = articleRepository.findAllWithComments();
+        List<Article> articleList = articleRepository.findAll();;
         model.addAttribute("articleList",articleList);
         return "index";
     }
@@ -64,7 +64,7 @@ public class ArticleController {
         Article article = new Article();
         BeanUtils.copyProperties(articleForm,article);
         //実行
-        articleRepository.insert(article);
+        articleRepository.save(article);
         return "redirect:/article";
     }
 
@@ -87,7 +87,8 @@ public class ArticleController {
         Comment comment = new Comment();
         BeanUtils.copyProperties(commentForm, comment);
         //実行
-        commentRepository.insert(comment);
+        commentRepository.save(comment);
+
         return "redirect:/article";
     }
 

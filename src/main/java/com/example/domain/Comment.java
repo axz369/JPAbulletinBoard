@@ -1,11 +1,17 @@
 package com.example.domain;
 
+import jakarta.persistence.*;
+
 /**
  * コメント情報を表すドメイン.
  */
+@Entity
+@Table(name = "comments")
 public class Comment {
 
     /** コメントid */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /** コメントid */
@@ -14,8 +20,10 @@ public class Comment {
     /** 投稿者名 */
     private String content;
 
-    /** 記事id */
-    private Integer articleId;
+    /** 記事 */
+    @ManyToOne
+    @JoinColumn(name = "article_id")
+    private Article article;
 
 
 
@@ -44,12 +52,12 @@ public class Comment {
         this.content = content;
     }
 
-    public Integer getArticleId() {
-        return articleId;
+    public Article getArticle() {
+        return article;
     }
 
-    public void setArticleId(Integer articleId) {
-        this.articleId = articleId;
+    public void setArticle(Article article) {
+        this.article = article;
     }
 
 
@@ -60,7 +68,7 @@ public class Comment {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", content='" + content + '\'' +
-                ", articleId=" + articleId +
+                ", article=" + article +
                 '}';
     }
 }

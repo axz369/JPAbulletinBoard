@@ -1,15 +1,18 @@
 package com.example.domain;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.*;
 
 import java.util.List;
 
 /**
  * 記事情報を表すドメイン.
  */
+@Entity
+@Table(name = "articles")
 public class Article {
     /** 記事id */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /** 投稿者名 */
@@ -19,8 +22,18 @@ public class Article {
     private String content;
 
     /** コメントリスト */
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> commentList;
 
+
+
+    public Article() {}
+
+    public Article(int id, String name, String content) {
+        this.id = id;
+        this.name = name;
+        this.content = content;
+    }
 
 
     // getter setter
