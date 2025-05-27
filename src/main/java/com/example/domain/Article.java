@@ -4,12 +4,17 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+//@Entity：このクラスがJPAエンティティであることを示す
+//@Table(name = "articles")：このエンティティが articlesテーブルにマッピングされることを表す
 /**
  * 記事情報を表すドメイン.
  */
 @Entity
 @Table(name = "articles")
 public class Article {
+
+    //@Id：このフィールドが主キーであることを示す
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)：DB側で自動採番されるという意味
     /** 記事id */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +26,10 @@ public class Article {
     /** 内容 */
     private String content;
 
+    //@OneToMany：この Article に複数の Comment が紐づく（1記事に対し複数コメント）関係
+    //mappedBy = "article"：Comment クラスの article フィールドによりマッピングされていることを示す（双方向関連）
     /** コメントリスト */
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "article")
     private List<Comment> commentList;
 
 

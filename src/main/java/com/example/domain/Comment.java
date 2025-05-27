@@ -2,6 +2,8 @@ package com.example.domain;
 
 import jakarta.persistence.*;
 
+//@Entity：このクラスがJPAエンティティであること表す。データベースの1つのテーブルと対応する。
+//@Table(name = "comments")：このエンティティが commentsテーブルにマッピングされることを表す
 /**
  * コメント情報を表すドメイン.
  */
@@ -9,6 +11,8 @@ import jakarta.persistence.*;
 @Table(name = "comments")
 public class Comment {
 
+    //@Id：このフィールドが主キーであることを示す
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)：DB側で自動採番されるという意味
     /** コメントid */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +24,8 @@ public class Comment {
     /** 投稿者名 */
     private String content;
 
+    //@ManyToOne：このコメントが1つの記事（Article）に属していることを示す（多：1 の関係）
+    //@JoinColumn(name = "article_id")：commentsテーブルのarticle_idカラムが外部キーとなり、article（親記事）と紐付けらるという意味
     /** 記事 */
     @ManyToOne
     @JoinColumn(name = "article_id")
