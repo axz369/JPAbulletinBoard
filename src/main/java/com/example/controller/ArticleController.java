@@ -41,7 +41,7 @@ public class ArticleController {
     @GetMapping("")
     public String index(ArticleForm articleForm, CommentForm commentForm, Model model){
         //表示するたびに最新の記事一覧を取得
-        List<Article> articleList = articleRepository.findAll();;
+        List<Article> articleList = articleRepository.findAllWithComments();
         model.addAttribute("articleList",articleList);
         return "index";
     }
@@ -77,18 +77,24 @@ public class ArticleController {
      * @return 記事一覧画面
      */
     @PostMapping("/insert-comment")
-    public String insertComment(ArticleForm articleForm, @Validated CommentForm commentForm,BindingResult commentResult,Model model){
+    public String insertComment(ArticleForm articleForm,
+                                @Validated CommentForm commentForm,
+                                BindingResult commentResult,
+                                Model model){
 
-        //一つでもエラーがあればフォーム画面に戻る
         if(commentResult.hasErrors()){
-            return index(articleForm,commentForm,model);
+            return index(articleForm, commentForm, model);
         }
 
         Comment comment = new Comment();
         BeanUtils.copyProperties(commentForm, comment);
-        //実行
-        commentRepository.save(comment);
 
+        // ★ ここが重要：Article を設定
+        Article article = articleRepository.findById(commentForm.getArticleId())
+                .orElseThrow(); // IDが不正な場合は例外
+        comment.setArticle(article);
+
+        commentRepository.save(comment);
         return "redirect:/article";
     }
 
