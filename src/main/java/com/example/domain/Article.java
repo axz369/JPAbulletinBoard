@@ -26,7 +26,7 @@ public class Article {
     /** 内容 */
     private String content;
 
-    //@OneToMany：この Article に複数の Comment が紐づく（1記事に対し複数コメント）関係
+    //@OneToMany：この Article に複数の Comment が紐づく（1記事に対し複数コメント）関係 親のfindAllを使ったときに自動でとれるようになる
     //mappedBy = "article"：Comment クラスの article フィールドによりマッピングされていることを示す（双方向関連）
     /** コメントリスト */
     @OneToMany(mappedBy = "article")

@@ -41,6 +41,11 @@ public class ArticleController {
     @GetMapping("")
     public String index(ArticleForm articleForm, CommentForm commentForm, Model model){
         //表示するたびに最新の記事一覧を取得
+
+        //**************************************
+        //なぜfindAll()だけで付随されるコメントまでとれるのかわからない
+        //**************************************
+
         List<Article> articleList = articleRepository.findAll();
         model.addAttribute("articleList",articleList);
         return "index";
@@ -63,7 +68,11 @@ public class ArticleController {
         }
 
         Article article = new Article();
-        BeanUtils.copyProperties(articleForm,article);
+
+        //記事投稿者と内容を手動でマッピング
+        article.setName(articleForm.getArticleName());
+        article.setContent(articleForm.getArticleContent());
+
         //実行
         articleRepository.save(article);
         return "redirect:/article";
@@ -89,7 +98,17 @@ public class ArticleController {
         }
 
         Comment comment = new Comment();
-        BeanUtils.copyProperties(commentForm, comment);
+        //articleIdのみ自動でマッピング
+        BeanUtils.copyProperties(commentForm,comment);
+        //コメント投稿者と内容を手動でマッピング
+        comment.setName(commentForm.getCommentName());
+        comment.setContent(commentForm.getCommentContent());
+
+
+        //**************************************
+        //なぜコメントを追加するのに記事がオブジェクトが必要なのか？
+        //IDが不正な場合は例外とはどういう意味か？
+        //**************************************
 
         // コメントを紐づける対象の記事を取得
         Article article = articleRepository.findById(commentForm.getArticleId())
