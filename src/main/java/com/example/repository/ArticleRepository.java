@@ -13,7 +13,7 @@ import java.util.List;
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     //**************************************
-    //なぜinterface?
+    // SpringがこのInterFaceをもとに実装してくれるので自分で作るのはクラスではなくInterface
     //**************************************
 }
 

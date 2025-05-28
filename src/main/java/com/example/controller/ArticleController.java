@@ -40,10 +40,11 @@ public class ArticleController {
      */
     @GetMapping("")
     public String index(ArticleForm articleForm, CommentForm commentForm, Model model){
+
         //表示するたびに最新の記事一覧を取得
 
         //**************************************
-        //なぜfindAll()だけで付随されるコメントまでとれるのかわからない
+        // domainで@ManyToOneや@OneToManyを書いているのでfindAll()のみでコメントまで付いてくる
         //**************************************
 
         List<Article> articleList = articleRepository.findAll();
@@ -106,8 +107,8 @@ public class ArticleController {
 
 
         //**************************************
-        //なぜコメントを追加するのに記事がオブジェクトが必要なのか？
-        //IDが不正な場合は例外とはどういう意味か？
+        //commentドメインにはarticleオブジェクトをフィールドに持っているのでまず記事を取得する
+        //.orElseThrow() : Optional に対して .orElseThrow() を呼ぶと、id に対応する Article が見つかればその中身が返り、なければ Optional.empty()」が返る
         //**************************************
 
         // コメントを紐づける対象の記事を取得
