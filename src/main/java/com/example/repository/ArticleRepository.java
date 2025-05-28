@@ -14,10 +14,5 @@ import java.util.List;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
-    //SELECT a Article エンティティを選択（SELECT * と同じ）
-    //FROM Article a	Article エンティティを a という別名で使う
-    //LEFT JOIN FETCH a.commentList	Article に紐づく commentList を 一緒に取得する
-    @Query("SELECT a FROM Article a LEFT JOIN FETCH a.commentList ORDER BY a.id DESC")
-    List<Article> findAllWithComments();
 }
 

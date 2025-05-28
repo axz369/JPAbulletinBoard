@@ -14,5 +14,6 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
     // クエリメソッド（Query Methods）: メソッド名から自動的にクエリを解析して実行する
+    // 記事idから付随するコメントを取得する
     List<Comment> findByArticleIdOrderByIdAsc(int articleId);
 }
