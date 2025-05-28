@@ -1,4 +1,3 @@
-// com.example.repository.CommentRepository
 package com.example.repository;
 
 import com.example.domain.Comment;
